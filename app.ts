@@ -63,3 +63,45 @@ const takeAwayOrder = orderFactory.create('TakeAway',{deliveryAddress:'Junin 213
 
 console.log(dineInOrder)
 console.log(takeAwayOrder)
+// --- ---- ---
+// --- OBSERVER ---
+
+class Observador {
+  constructor(private nombre: string) {}
+
+  avisar(estado: "En Preparacion" | "Listo para servir", nombre: string){
+    console.log(`[${this.nombre}] : El pedido ${nombre} ha cambiado su estado a - ${estado} - `)
+  }
+}
+
+class Pedido {
+private observadores: Observador[] = [];
+public estado: "En Preparacion" | "Listo para servir" = "En Preparacion" 
+
+constructor (public nombre: string){}
+
+addObserver(observador: Observador): void {
+this.observadores.push(observador);
+}
+
+updateStatus(nuevoEstado: "En Preparacion" | "Listo para servir"): void {
+this.estado = nuevoEstado;
+this.notificarObservadores();
+}
+
+private notificarObservadores(): void {
+this.observadores.forEach((obs) => obs.avisar(this.estado,this.nombre));
+ }
+}
+
+const order = new Pedido("Pollito")
+const kitchen = new Observador("Cocina")
+const waiter = new Observador("Mesero")
+const notification = new Observador("Notificador")
+order.addObserver(kitchen)
+order.addObserver(waiter)
+order.addObserver(notification)
+
+order.updateStatus("Listo para servir")
+
+// --- ---- ---
