@@ -105,3 +105,22 @@ order.addObserver(notification)
 order.updateStatus("Listo para servir")
 
 // --- ---- ---
+// --- SINGLETON ---
+
+class ReservationManager {
+private static instancia: ReservationManager;
+
+ private constructor() {}
+
+public static obtenerInstancia(): ReservationManager {
+if (!ReservationManager.instancia) {
+ReservationManager.instancia = new ReservationManager();
+}
+return ReservationManager.instancia;  
+}
+}
+
+const manager1 = ReservationManager.obtenerInstancia()
+const manager2 = ReservationManager.obtenerInstancia()
+
+console.log(manager1 === manager2)
